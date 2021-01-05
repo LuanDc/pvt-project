@@ -4,6 +4,7 @@ defmodule PvtProject.Event.RegisterTest do
   import PvtProject.Factory
 
   alias PvtProject.Guest
+  alias PvtProject.Event
   alias PvtProject.Event.Register
 
   describe "call/1" do
@@ -15,7 +16,7 @@ defmodule PvtProject.Event.RegisterTest do
         %{name: guest2_name, paid: false, phone_number: guest2_phone_number}
       ] = event_params.guests
 
-      assert {:ok, event} = Register.call(event_params)
+      assert {:ok, %Event{} = event} = Register.call(event_params)
 
       assert event.name == event_params.name
       assert event.description == event_params.description
