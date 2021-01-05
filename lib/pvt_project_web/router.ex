@@ -5,8 +5,10 @@ defmodule PvtProjectWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", PvtProjectWeb do
+  scope "/v1", PvtProjectWeb do
     pipe_through :api
+
+    resources "/events", EventsController, only: [:create]
   end
 
   # Enables LiveDashboard only for development
