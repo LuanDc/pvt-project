@@ -1,6 +1,10 @@
 defmodule PvtProjectWeb.EventsController do
+  @moduledoc false
+
   use PvtProjectWeb, :controller
 
+  @doc false
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, params) do
     with {:ok, event} <- PvtProject.register_event(params) do
       conn

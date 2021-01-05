@@ -1,4 +1,6 @@
 defmodule PvtProject.Guest do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -15,6 +17,7 @@ defmodule PvtProject.Guest do
   end
 
   @doc false
+  @spec changeset(%__MODULE__{}, map()) :: Ecto.Changeset.t()
   def changeset(guest, attrs) do
     guest
     |> cast(attrs, [:name, :phone_number, :paid])

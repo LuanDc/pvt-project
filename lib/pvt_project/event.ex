@@ -1,4 +1,6 @@
 defmodule PvtProject.Event do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -16,6 +18,7 @@ defmodule PvtProject.Event do
   end
 
   @doc false
+  @spec changeset(%__MODULE__{}, map()) :: Ecto.Changeset.t()
   def changeset(event, attrs) do
     event
     |> cast(attrs, [:name, :description, :address, :date])
