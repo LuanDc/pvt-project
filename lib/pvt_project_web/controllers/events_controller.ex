@@ -3,6 +3,8 @@ defmodule PvtProjectWeb.EventsController do
 
   use PvtProjectWeb, :controller
 
+  action_fallback PvtProjectWeb.FallbackController
+
   @doc false
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, params) do

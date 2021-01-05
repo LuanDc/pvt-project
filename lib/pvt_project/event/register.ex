@@ -13,4 +13,7 @@ defmodule PvtProject.Event.Register do
 
   defp handle_changeset(%Ecto.Changeset{valid?: true} = changeset),
     do: Repo.insert(changeset)
+
+  defp handle_changeset(%Ecto.Changeset{valid?: false} = changeset),
+    do: {:error, changeset}
 end
