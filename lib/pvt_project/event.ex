@@ -23,6 +23,6 @@ defmodule PvtProject.Event do
     event
     |> cast(attrs, [:name, :description, :address, :date])
     |> cast_assoc(:guests)
-    |> validate_required([:name, :description, :address, :date])
+    |> validate_required([:name])
   end
 end
