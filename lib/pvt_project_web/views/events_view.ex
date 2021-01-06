@@ -15,7 +15,9 @@ defmodule PvtProjectWeb.EventsView do
   def render("create.json", %{event: event}) do
     %{
       message: "Event Created With Success",
-      data: render(EventsView, "event.json", event_guests: event)
+      data: %{
+        event: render(EventsView, "event.json", event_guests: event)
+      }
     }
   end
 

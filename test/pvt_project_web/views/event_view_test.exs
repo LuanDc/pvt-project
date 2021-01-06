@@ -38,20 +38,22 @@ defmodule PvtProjectWeb.EventsViewTest do
     expected_response = %{
       message: "Event Created With Success",
       data: %{
-        name: event.name,
-        address: event.address,
-        description: event.description,
-        date: event.date,
-        guests: [
-          %{
-            name: guest_1.name,
-            phone_number: guest_1.phone_number
-          },
-          %{
-            name: guest_2.name,
-            phone_number: guest_2.phone_number
-          }
-        ]
+        event: %{
+          name: event.name,
+          address: event.address,
+          description: event.description,
+          date: event.date,
+          guests: [
+            %{
+              name: guest_1.name,
+              phone_number: guest_1.phone_number
+            },
+            %{
+              name: guest_2.name,
+              phone_number: guest_2.phone_number
+            }
+          ]
+        }
       }
     }
 
