@@ -4,6 +4,32 @@ defmodule PvtProjectWeb.EventsViewTest do
   import Phoenix.View
   import PvtProject.Factory
 
+  test "index.json" do
+    [event1, event2] = insert_pair(:event)
+
+    expected_response = %{
+      data: %{
+        events: [
+          %{
+            name: event1.name,
+            address: event1.address,
+            description: event1.description,
+            date: event1.date
+          },
+          %{
+            name: event2.name,
+            address: event2.address,
+            description: event2.description,
+            date: event2.date
+          }
+        ]
+      }
+    }
+
+    assert expected_response ==
+             render(PvtProjectWeb.EventsView, "index.json", events: [event1, event2])
+  end
+
   test "create.json" do
     event = insert(:event)
 
