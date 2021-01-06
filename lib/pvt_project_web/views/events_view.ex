@@ -2,12 +2,12 @@ defmodule PvtProjectWeb.EventsView do
   use PvtProjectWeb, :view
 
   alias PvtProject.Event
-  alias PvtProjectWeb.{GuestView, EventsView}
+  alias PvtProjectWeb.GuestView
 
   def render("index.json", %{events: events}) do
     %{
       data: %{
-        events: Enum.map(events, &render(EventsView, "event.json", event: &1))
+        events: render_many(events, __MODULE__, "event.json")
       }
     }
   end
@@ -16,42 +16,27 @@ defmodule PvtProjectWeb.EventsView do
     %{
       message: "Event Created With Success",
       data: %{
-        event: render(EventsView, "event.json", event_guests: event)
+        event: render_one(event, __MODULE__, "event.json", event: event)
       }
     }
   end
 
-  def render("event.json", %{
-        event: %Event{
-          name: event_name,
-          address: event_address,
-          description: event_description,
-          date: event_date
-        }
-      }) do
+  def render("event.json", %{event: %Event{} = event}) do
     %{
-      name: event_name,
-      address: event_address,
-      description: event_description,
-      date: event_date
+      name: event.name,
+      address: event.address,
+      description: event.description,
+      date: event.date,
+      guests: render_many(event.guests, GuestView, "guest.json")
     }
   end
 
-  def render("event.json", %{
-        event_guests: %Event{
-          name: event_name,
-          address: event_address,
-          description: event_description,
-          date: event_date,
-          guests: event_guests
-        }
-      }) do
+  def render("event.json", %{events: %Event{} = event}) do
     %{
-      name: event_name,
-      address: event_address,
-      description: event_description,
-      date: event_date,
-      guests: render_many(event_guests, GuestView, "guest.json")
+      name: event.name,
+      address: event.address,
+      description: event.description,
+      date: event.date
     }
   end
 end
