@@ -2,7 +2,7 @@ defmodule PvtProject.Factory do
   use ExMachina.Ecto, repo: PvtProject.Repo
 
   def event_factory() do
-    %PvtProject.Event{
+    %PvtProject.Event.Party{
       name: sequence(:name, &"name #{&1}"),
       description: sequence(:description, &"description #{&1}"),
       address: sequence(:address, &"address #{&1}"),
@@ -12,7 +12,7 @@ defmodule PvtProject.Factory do
   end
 
   def guest_factory do
-    %PvtProject.Guest{
+    %PvtProject.Event.Guest{
       name: sequence(:name, &"name #{&1}"),
       phone_number: sequence(:phone_number, &"name #{&1}")
     }

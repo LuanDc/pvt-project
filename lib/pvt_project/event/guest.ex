@@ -1,17 +1,17 @@
-defmodule PvtProject.Guest do
+defmodule PvtProject.Event.Guest do
   @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias PvtProject.Event
+  alias PvtProject.Event.Party
 
   schema "guests" do
     field :name, :string
     field :phone_number, :string
     field :paid, :boolean, default: false
 
-    belongs_to :event, Event, foreign_key: :event_id
+    belongs_to :party, Party, foreign_key: :party_id
 
     timestamps()
   end

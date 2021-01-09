@@ -1,13 +1,14 @@
 defmodule PvtProject.Event.Register do
   @moduledoc false
 
-  alias PvtProject.{Repo, Event}
+  alias PvtProject.Repo
+  alias PvtProject.Event.Party
 
   @doc false
-  @spec call(map()) :: {:ok, %Event{}}
+  @spec call(map()) :: {:ok, %Party{}}
   def call(params) do
-    %Event{}
-    |> Event.changeset(params)
+    %Party{}
+    |> Party.changeset(params)
     |> handle_changeset()
   end
 

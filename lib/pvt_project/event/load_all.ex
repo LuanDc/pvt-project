@@ -1,12 +1,10 @@
 defmodule PvtProject.Event.LoadAll do
   @moduledoc false
 
-  alias PvtProject.{Repo, Event}
+  alias PvtProject.Repo
+  alias PvtProject.Event.Party
 
   @doc false
-  @spec call! :: [%Event{}, ...]
-  def call!() do
-    Event
-    |> Repo.all()
-  end
+  @spec call! :: [%Party{}, ...]
+  def call!(), do: Party |> Repo.all()
 end

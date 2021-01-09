@@ -1,9 +1,9 @@
-defmodule PvtProject.GuestTest do
+defmodule PvtProject.Event.GuestTest do
   use PvtProject.DataCase
 
   import PvtProject.Factory
 
-  alias PvtProject.Guest
+  alias PvtProject.Event.Guest
 
   @invalid_params %{}
 

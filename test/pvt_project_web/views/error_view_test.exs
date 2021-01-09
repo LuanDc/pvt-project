@@ -4,11 +4,11 @@ defmodule PvtProjectWeb.ErrorViewTest do
   import Phoenix.View
   import PvtProject.Factory
 
-  alias PvtProject.Event
+  alias PvtProject.Event.Party
 
   test "renders 400.json when params is a changeset" do
     {_, invalid_params} = params_for(:event) |> Map.pop(:name)
-    invalid_changeset = %Event{} |> Event.changeset(invalid_params)
+    invalid_changeset = %Party{} |> Party.changeset(invalid_params)
 
     expected_response = %{
       message: "Bad Request",

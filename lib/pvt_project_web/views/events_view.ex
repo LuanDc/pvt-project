@@ -1,7 +1,7 @@
 defmodule PvtProjectWeb.EventsView do
   use PvtProjectWeb, :view
 
-  alias PvtProject.Event
+  alias PvtProject.Event.Party
   alias PvtProjectWeb.GuestView
 
   def render("index.json", %{events: events}) do
@@ -21,7 +21,7 @@ defmodule PvtProjectWeb.EventsView do
     }
   end
 
-  def render("event.json", %{event: %Event{} = event}) do
+  def render("event.json", %{event: %Party{} = event}) do
     %{
       name: event.name,
       address: event.address,
@@ -31,7 +31,7 @@ defmodule PvtProjectWeb.EventsView do
     }
   end
 
-  def render("event.json", %{events: %Event{} = event}) do
+  def render("event.json", %{events: %Party{} = event}) do
     %{
       name: event.name,
       address: event.address,

@@ -3,7 +3,7 @@ defmodule PvtProject.EventTest do
 
   import PvtProject.Factory
 
-  alias PvtProject.Event
+  alias PvtProject.Event.Party
 
   @invalid_params %{}
 
@@ -11,13 +11,13 @@ defmodule PvtProject.EventTest do
     test "when params is valid, returns a valid changeset" do
       event = params_with_assocs(:event)
 
-      changeset = Event.changeset(%Event{}, event)
+      changeset = Party.changeset(%Party{}, event)
 
       assert changeset.valid?
     end
 
     test "when params is invalid, returns a invalid changeset" do
-      changeset = Event.changeset(%Event{}, @invalid_params)
+      changeset = Party.changeset(%Party{}, @invalid_params)
 
       refute changeset.valid?
     end

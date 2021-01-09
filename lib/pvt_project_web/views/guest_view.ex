@@ -1,7 +1,7 @@
 defmodule PvtProjectWeb.GuestView do
   use PvtProjectWeb, :view
 
-  alias PvtProject.Guest
+  alias PvtProject.Event.Guest
 
   def render("guest.json", %{
         guest: %Guest{
