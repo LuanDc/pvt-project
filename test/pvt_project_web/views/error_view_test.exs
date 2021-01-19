@@ -7,7 +7,7 @@ defmodule PvtProjectWeb.ErrorViewTest do
   alias PvtProject.Event.Party
 
   test "renders 400.json when params is a changeset" do
-    {_, invalid_params} = params_for(:event) |> Map.pop(:name)
+    {_, invalid_params} = params_for(:party) |> Map.pop(:name)
     invalid_changeset = %Party{} |> Party.changeset(invalid_params)
 
     expected_response = %{

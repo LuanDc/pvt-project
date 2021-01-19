@@ -1,7 +1,7 @@
 defmodule PvtProject.Factory do
   use ExMachina.Ecto, repo: PvtProject.Repo
 
-  def event_factory() do
+  def party_factory() do
     %PvtProject.Event.Party{
       name: sequence(:name, &"name #{&1}"),
       description: sequence(:description, &"description #{&1}"),

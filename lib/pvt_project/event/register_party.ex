@@ -1,4 +1,4 @@
-defmodule PvtProject.Event.Register do
+defmodule PvtProject.Event.RegisterParty do
   @moduledoc false
 
   alias PvtProject.Repo

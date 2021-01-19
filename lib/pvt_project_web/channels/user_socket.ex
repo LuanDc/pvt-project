@@ -24,7 +24,7 @@ defmodule PvtProjectWeb.UserSocket do
   #
   #     def id(socket), do: "user_socket:#{socket.assigns.user_id}"
   #
-  # Would allow you to broadcast a "disconnect" event and terminate
+  # Would allow you to broadcast a "disconnect" party and terminate
   # all active sockets and channels for a given user:
   #
   #     PvtProjectWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})

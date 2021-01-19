@@ -19,8 +19,8 @@ defmodule PvtProject.Event.Party do
 
   @doc false
   @spec changeset(%__MODULE__{}, map()) :: Ecto.Changeset.t()
-  def changeset(event, attrs) do
-    event
+  def changeset(party, attrs) do
+    party
     |> cast(attrs, [:name, :description, :address, :date])
     |> cast_assoc(:guests)
     |> validate_required([:name])

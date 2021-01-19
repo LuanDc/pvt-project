@@ -5,28 +5,28 @@ defmodule PvtProject.Event.RegisterTest do
 
   alias PvtProject.Event.Guest
   alias PvtProject.Event.Party
-  alias PvtProject.Event.Register
+  alias PvtProject.Event.RegisterParty
 
   describe "call/1" do
-    test "when params is valid, should registers a new event" do
-      event_params = params_with_assocs(:event)
+    test "when params is valid, should registers a new party" do
+      party_params = params_with_assocs(:party)
 
       [
         %{name: guest1_name, paid: false, phone_number: guest1_phone_number},
         %{name: guest2_name, paid: false, phone_number: guest2_phone_number}
-      ] = event_params.guests
+      ] = party_params.guests
 
-      assert {:ok, %Party{} = event} = Register.call(event_params)
+      assert {:ok, %Party{} = party} = RegisterParty.call(party_params)
 
-      assert event.name == event_params.name
-      assert event.description == event_params.description
-      assert event.address == event_params.address
-      assert event.date == NaiveDateTime.from_iso8601!(event_params.date)
+      assert party.name == party_params.name
+      assert party.description == party_params.description
+      assert party.address == party_params.address
+      assert party.date == NaiveDateTime.from_iso8601!(party_params.date)
 
       assert [
                %Guest{name: ^guest1_name, phone_number: ^guest1_phone_number},
                %Guest{name: ^guest2_name, phone_number: ^guest2_phone_number}
-             ] = event.guests
+             ] = party.guests
     end
   end
 end

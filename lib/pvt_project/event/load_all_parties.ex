@@ -1,4 +1,4 @@
-defmodule PvtProject.Event.LoadAll do
+defmodule PvtProject.Event.LoadAllParties do
   @moduledoc false
 
   alias PvtProject.Repo

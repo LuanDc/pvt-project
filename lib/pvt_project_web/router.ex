@@ -8,7 +8,7 @@ defmodule PvtProjectWeb.Router do
   scope "/v1", PvtProjectWeb do
     pipe_through :api
 
-    resources "/events", EventsController, only: [:index, :create]
+    resources "/parties", PartyController, only: [:index, :create]
   end
 
   # Enables LiveDashboard only for development
