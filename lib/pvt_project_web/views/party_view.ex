@@ -1,7 +1,7 @@
 defmodule PvtProjectWeb.PartyView do
   use PvtProjectWeb, :view
 
-  alias PvtProject.Event.Party
+  alias PvtProject.Events.Party
   alias PvtProjectWeb.GuestView
 
   def render("index.json", %{parties: parties}) do

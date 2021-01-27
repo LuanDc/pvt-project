@@ -3,14 +3,14 @@ defmodule PvtProjectWeb.PartyController do
 
   use PvtProjectWeb, :controller
 
-  alias PvtProject.Event
+  alias PvtProject.Events
 
   action_fallback PvtProjectWeb.FallbackController
 
   @doc false
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    parties = Event.load_parties!()
+    parties = Events.load_parties()
 
     conn
     |> put_status(:ok)
@@ -20,7 +20,7 @@ defmodule PvtProjectWeb.PartyController do
   @doc false
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, params) do
-    with {:ok, party} <- Event.register_party(params) do
+    with {:ok, party} <- Events.create_party(params) do
       conn
       |> put_status(:created)
       |> render("create.json", party: party)

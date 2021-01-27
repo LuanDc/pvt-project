@@ -3,7 +3,7 @@ defmodule PvtProject.EventTest do
 
   import PvtProject.Factory
 
-  alias PvtProject.Event.Party
+  alias PvtProject.Events.Party
 
   @invalid_params %{}
 

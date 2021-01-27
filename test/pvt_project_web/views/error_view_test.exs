@@ -4,7 +4,7 @@ defmodule PvtProjectWeb.ErrorViewTest do
   import Phoenix.View
   import PvtProject.Factory
 
-  alias PvtProject.Event.Party
+  alias PvtProject.Events.Party
 
   test "renders 400.json when params is a changeset" do
     {_, invalid_params} = params_for(:party) |> Map.pop(:name)

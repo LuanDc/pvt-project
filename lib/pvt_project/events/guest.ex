@@ -1,10 +1,10 @@
-defmodule PvtProject.Event.Guest do
+defmodule PvtProject.Events.Guest do
   @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias PvtProject.Event.Party
+  alias PvtProject.Events.Party
 
   schema "guests" do
     field :name, :string
