@@ -12,6 +12,14 @@ defmodule PvtProjectWeb.PartyView do
     }
   end
 
+  def render("show.json", %{party: party}) do
+    %{
+      data: %{
+        party: render_one(party, __MODULE__, "party_guests.json", party: party)
+      }
+    }
+  end
+
   def render("create.json", %{party: party}) do
     %{
       message: "Event Created With Success",

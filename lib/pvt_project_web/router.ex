@@ -9,6 +9,7 @@ defmodule PvtProjectWeb.Router do
     pipe_through :api
 
     resources "/parties", PartyController, only: [:index, :create]
+    resources "/parties/:id/guests", GuestController, only: [:create]
   end
 
   # Enables LiveDashboard only for development

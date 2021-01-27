@@ -30,6 +30,35 @@ defmodule PvtProjectWeb.PartyViewTest do
              render(PvtProjectWeb.PartyView, "index.json", parties: [party1, party2])
   end
 
+  test "show.json" do
+    party = insert(:party)
+    [guest_1, guest_2] = party.guests
+
+    expected_response = %{
+      data: %{
+        party: %{
+          name: party.name,
+          address: party.address,
+          description: party.description,
+          date: party.date,
+          guests: [
+            %{
+              name: guest_1.name,
+              phone_number: guest_1.phone_number
+            },
+            %{
+              name: guest_2.name,
+              phone_number: guest_2.phone_number
+            }
+          ]
+        }
+      }
+    }
+
+    assert expected_response ==
+             render(PvtProjectWeb.PartyView, "show.json", party: party)
+  end
+
   test "create.json" do
     party = insert(:party)
 
