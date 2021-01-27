@@ -5,13 +5,13 @@ defmodule PvtProject.EventsTest do
 
   alias PvtProject.Repo
   alias PvtProject.Events
-  alias PvtProject.Events.{Guest, Party}
+  alias PvtProject.Events.{Guest, Party, Parties}
 
   describe "load_parties/0" do
     test "returns all parties" do
       [event1, event2] = insert_pair(:party)
 
-      parties = Events.load_parties()
+      parties = Parties.load_parties()
 
       expected_event1 = event1 |> Repo.forget(:guests, :many)
       expected_event2 = event2 |> Repo.forget(:guests, :many)
@@ -30,7 +30,7 @@ defmodule PvtProject.EventsTest do
         %{name: guest2_name, paid: false, phone_number: guest2_phone_number}
       ] = party_params.guests
 
-      assert {:ok, %Party{} = party} = Events.create_party(party_params)
+      assert {:ok, %Party{} = party} = Parties.create_party(party_params)
 
       assert party.name == party_params.name
       assert party.description == party_params.description

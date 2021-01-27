@@ -1,4 +1,4 @@
-defmodule PvtProject.Events do
+defmodule PvtProject.Events.Parties do
   @moduledoc """
   The events context.
   """
