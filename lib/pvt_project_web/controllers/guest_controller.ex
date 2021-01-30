@@ -10,11 +10,10 @@ defmodule PvtProjectWeb.GuestController do
   @doc false
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, params) do
-    with {:ok, party} <- Events.add_guest_to_guests_list(params["id"], params["guest"]) do
+    with {:ok, guest} <- Events.add_new_guest(params["id"], params["guest"]) do
       conn
       |> put_status(:created)
-      |> put_view(PvtProjectWeb.PartyView)
-      |> render("party_guests.json", party: party)
+      |> render("create.json", guest: guest)
     end
   end
 end

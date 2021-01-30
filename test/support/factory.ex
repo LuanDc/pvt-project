@@ -6,7 +6,7 @@ defmodule PvtProject.Factory do
       name: sequence(:name, &"name #{&1}"),
       description: sequence(:description, &"description #{&1}"),
       address: sequence(:address, &"address #{&1}"),
-      date: "2015-01-23 23:50:07",
+      date: "2015-01-23T23:50:07",
       guests: build_pair(:guest)
     }
   end

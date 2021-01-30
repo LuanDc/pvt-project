@@ -89,27 +89,23 @@ defmodule PvtProject.Events do
 
   ## Example
 
-    iex> add_guest_to_guests_list(party_id, valid_params)
+    iex> add_new_guest(party_id, valid_params)
     {:ok, PvtProject.Events.Party.t()}
 
-    iex> add_guest_to_guests_list(party_id, invalid_params)
+    iex> add_new_guest(party_id, invalid_params)
     {:error, changeset}
 
   """
-  @spec add_guest_to_guests_list(String.t(), map()) ::
+  @spec add_new_guest(String.t(), map()) ::
           {:ok, Events.Party.t()} | Ecto.Changeset.t()
-  def add_guest_to_guests_list(party_id, guest_params) do
+  def add_new_guest(party_id, guest_params) do
     with {:ok, party} <- Events.load_party(party_id),
          %Ecto.Changeset{valid?: true} = changeset <- Guest.changeset(%Guest{}, guest_params) do
       changeset
       |> Changeset.put_assoc(:party, party)
       |> Repo.insert()
-      |> handle_guest_insert(party)
     end
   end
-
-  defp handle_guest_insert({:ok, %Guest{} = _guest}, %Party{} = party),
-    do: Events.load_party_and_assocs(party.id)
 
   @doc """
   Receives a party and load guests assoc

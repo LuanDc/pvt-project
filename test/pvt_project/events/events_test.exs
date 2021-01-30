@@ -68,8 +68,9 @@ defmodule PvtProject.EventsTest do
       party = insert(:party)
       guest = params_for(:guest, paid: true)
 
-      assert {:ok, %Party{} = updated_party} = Events.add_guest_to_guests_list(party.id, guest)
-      assert Enum.count(updated_party.guests) > Enum.count(party.guests)
+      assert {:ok, %Guest{} = guest} = Events.add_new_guest(party.id, guest)
+      assert guest.name == guest.name
+      assert guest.phone_number == guest.phone_number
     end
   end
 end
