@@ -8,6 +8,10 @@ defmodule PvtProject.EventsTest do
   alias PvtProject.Events.{Guest, Party}
 
   @invalid_id 123
+  @valid_guest %{
+    "name" => "guest_name",
+    "phone_number" => "guest_phone_number"
+  }
 
   describe "load_parties/0" do
     test "returns all parties" do
@@ -35,42 +39,36 @@ defmodule PvtProject.EventsTest do
       assert party.date == loaded_party.date
     end
 
-    test "when params is invalid, returna error" do
+    test "when params is invalid, returns an error" do
       {:error, :not_found} = Events.load_party(@invalid_id)
     end
   end
 
   describe "create_party/1" do
-    test "when params is valid, should registers a new party" do
-      party_params = params_with_assocs(:party)
-
-      [
-        %{name: guest1_name, paid: false, phone_number: guest1_phone_number},
-        %{name: guest2_name, paid: false, phone_number: guest2_phone_number}
-      ] = party_params.guests
+    test "when params is valid, returns a new party" do
+      party_params = string_params_with_assocs(:party, guests: [@valid_guest])
 
       assert {:ok, %Party{} = party} = Events.create_party(party_params)
+      assert party.name == party_params["name"]
+      assert party.description == party_params["description"]
+      assert party.address == party_params["address"]
+      assert party.date == NaiveDateTime.from_iso8601!(party_params["date"])
 
-      assert party.name == party_params.name
-      assert party.description == party_params.description
-      assert party.address == party_params.address
-      assert party.date == NaiveDateTime.from_iso8601!(party_params.date)
+      guest = hd(party.guests)
 
-      assert [
-               %Guest{name: ^guest1_name, phone_number: ^guest1_phone_number},
-               %Guest{name: ^guest2_name, phone_number: ^guest2_phone_number}
-             ] = party.guests
+      assert guest.name == @valid_guest["name"]
+      assert guest.phone_number == @valid_guest["phone_number"]
     end
   end
 
   describe "add_new_guest/2" do
-    test "when params is valid, add a new guest to party's guests list" do
+    test "when params is valid, returns a new guest" do
       party = insert(:party)
-      guest = params_for(:guest, paid: true)
+      guest_params = string_params_for(:guest, paid: true)
 
-      assert {:ok, %Guest{} = guest} = Events.add_new_guest(party.id, guest)
-      assert guest.name == guest.name
-      assert guest.phone_number == guest.phone_number
+      assert {:ok, %Guest{} = guest} = Events.add_new_guest(party.id, guest_params)
+      assert guest.name == guest_params["name"]
+      assert guest.phone_number == guest_params["phone_number"]
     end
   end
 end
