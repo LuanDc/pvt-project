@@ -5,7 +5,7 @@ defmodule PvtProjectWeb.GuestControllerTest do
 
   describe "POST /guests" do
     test "when params is valid, added a new guest and returns 201 status code", %{conn: conn} do
-      guest = params_for(:guest)
+      guest = string_params_for(:guest)
       party = insert(:party)
 
       conn = post(conn, Routes.guest_path(conn, :create, party.id), %{guest: guest})
@@ -13,8 +13,8 @@ defmodule PvtProjectWeb.GuestControllerTest do
       expected_response = %{
         "message" => "Guest added with success!",
         "guest" => %{
-          "name" => guest.name,
-          "phoneNumber" => guest.phone_number
+          "name" => guest["name"],
+          "phoneNumber" => guest["phone_number"]
         }
       }
 

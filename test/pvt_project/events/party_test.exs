@@ -9,7 +9,7 @@ defmodule PvtProject.EventTest do
 
   describe "changeset/2" do
     test "when params is valid, returns a valid changeset" do
-      party = params_with_assocs(:party)
+      party = string_params_with_assocs(:party)
 
       changeset = Party.changeset(%Party{}, party)
 

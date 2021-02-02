@@ -9,7 +9,7 @@ defmodule PvtProject.Events.GuestTest do
 
   describe "changeset/2" do
     test "when params is valid, returns a valid changeset" do
-      guest = params_with_assocs(:guest)
+      guest = string_params_with_assocs(:guest)
 
       changeset = Guest.changeset(%Guest{}, guest)
 
