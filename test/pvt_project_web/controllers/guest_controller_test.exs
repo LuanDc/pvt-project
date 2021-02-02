@@ -4,11 +4,9 @@ defmodule PvtProjectWeb.GuestControllerTest do
   import PvtProject.Factory
 
   describe "POST /guests" do
-    test "when params is valid, added a new guest and returns 201 status code", %{conn: conn} do
-      guest = string_params_for(:guest)
+    test "when params is valid, renders a create guest response and returns 201 status code", %{conn: conn} do
       party = insert(:party)
-
-      conn = post(conn, Routes.guest_path(conn, :create, party.id), %{guest: guest})
+      guest = string_params_for(:guest)
 
       expected_response = %{
         "message" => "Guest added with success!",
@@ -18,7 +16,12 @@ defmodule PvtProjectWeb.GuestControllerTest do
         }
       }
 
-      assert json_response(conn, 201) == expected_response
+      response =
+        conn
+        |> post(Routes.guest_path(conn, :create, party.id), %{guest: guest})
+        |> json_response(conn, 201)
+
+      assert response == expected_response
     end
   end
 end
