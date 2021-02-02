@@ -14,7 +14,7 @@ defmodule PvtProject.Factory do
   def guest_factory do
     %PvtProject.Events.Guest{
       name: sequence(:name, &"name #{&1}"),
-      phone_number: sequence(:phone_number, &"name #{&1}"),
+      phone_number: sequence(:phone_number, &"phone_number #{&1}"),
       paid: false
     }
   end
