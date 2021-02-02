@@ -12,7 +12,7 @@ defmodule PvtProject.EventsTest do
     "name" => "guest_name",
     "phone_number" => "guest_phone_number"
   }
-  @invalid_id 123
+  @invalid_id 0
   @invalid_params %{}
 
   describe "load_parties/0" do
@@ -41,7 +41,7 @@ defmodule PvtProject.EventsTest do
       assert party.date == loaded_party.date
     end
 
-    test "when params is invalid, returns an error" do
+    test "when party id is invalid, returns an error" do
       insert(:party)
 
       expected_response = {:error, "Party not found!"}
@@ -65,6 +65,12 @@ defmodule PvtProject.EventsTest do
 
       assert guest.name == @valid_guest["name"]
       assert guest.phone_number == @valid_guest["phone_number"]
+    end
+
+    test "when params is invalid, returns a tuple error" do
+      party = insert(:party)
+
+      assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
     end
   end
 
