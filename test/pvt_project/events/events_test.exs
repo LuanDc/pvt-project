@@ -3,15 +3,17 @@ defmodule PvtProject.EventsTest do
 
   import PvtProject.Factory
 
+  alias Ecto.Changeset
   alias PvtProject.Repo
   alias PvtProject.Events
   alias PvtProject.Events.{Guest, Party}
 
-  @invalid_id 123
   @valid_guest %{
     "name" => "guest_name",
     "phone_number" => "guest_phone_number"
   }
+  @invalid_id 123
+  @invalid_params %{}
 
   describe "load_parties/0" do
     test "returns all parties" do
@@ -40,7 +42,12 @@ defmodule PvtProject.EventsTest do
     end
 
     test "when params is invalid, returns an error" do
-      {:error, :not_found} = Events.load_party(@invalid_id)
+      insert(:party)
+
+      expected_response = {:error, "Party not found!"}
+      response = Events.load_party(@invalid_id)
+
+      assert response == expected_response
     end
   end
 
@@ -69,6 +76,12 @@ defmodule PvtProject.EventsTest do
       assert {:ok, %Guest{} = guest} = Events.add_new_guest(party.id, guest_params)
       assert guest.name == guest_params["name"]
       assert guest.phone_number == guest_params["phone_number"]
+    end
+
+    test "when params is invalid, returns a tuple error" do
+      party = insert(:party)
+
+      assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
     end
   end
 end
