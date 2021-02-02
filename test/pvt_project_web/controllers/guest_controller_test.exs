@@ -3,8 +3,12 @@ defmodule PvtProjectWeb.GuestControllerTest do
 
   import PvtProject.Factory
 
+  alias PvtProject.Events.Guest
+
+  @invalid_params %{}
+
   describe "POST /guests" do
-    test "when params is valid, renders a create guest response and returns 201 status code", %{conn: conn} do
+    test "when params is valid, renders a create guest message and returns 201 status code", %{conn: conn} do
       party = insert(:party)
       guest = string_params_for(:guest)
 
@@ -19,9 +23,36 @@ defmodule PvtProjectWeb.GuestControllerTest do
       response =
         conn
         |> post(Routes.guest_path(conn, :create, party.id), %{guest: guest})
-        |> json_response(conn, 201)
+        |> json_response(:created)
 
       assert response == expected_response
     end
+
+    test "when params is invalid, returns an error message and 400 status code", %{conn: conn} do
+      party = insert(:party)
+
+      errors = string_changeset_errors(@invalid_params)
+
+      expected_response = %{
+        "message" => "Bad Request",
+        "details" => errors
+      }
+
+      response =
+        conn
+        |> post(Routes.guest_path(conn, :create, party.id), %{guest: @invalid_params})
+        |> json_response(:bad_request)
+
+      assert response == expected_response
+    end
+  end
+
+  defp string_changeset_errors(params) do
+    %Guest{}
+    |> Guest.changeset(params)
+    |> errors_on()
+    |> Enum.reduce(%{}, fn {key, val}, acc ->
+      Map.put(acc, Atom.to_string(key), val)
+    end)
   end
 end

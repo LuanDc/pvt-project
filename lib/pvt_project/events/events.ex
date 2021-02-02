@@ -52,7 +52,7 @@ defmodule PvtProject.Events do
 
   """
   @spec load_party_and_assocs(String.t()) ::
-          {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
+    {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
   def load_party_and_assocs(party_id) do
     with {:ok, party} <- Events.load_party(party_id) do
       {:ok, Events.load_guests_from_party(party)}
@@ -71,7 +71,8 @@ defmodule PvtProject.Events do
     {:error, changeset}
 
   """
-  @spec create_party(map()) :: {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_party(map()) ::
+    {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
   def create_party(params) do
     changeset = Party.changeset(%Party{}, params)
 
@@ -97,13 +98,20 @@ defmodule PvtProject.Events do
 
   """
   @spec add_new_guest(String.t(), map()) ::
-          {:ok, Events.Party.t()} | Ecto.Changeset.t()
+    {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
   def add_new_guest(party_id, guest_params) do
-    with {:ok, party} <- Events.load_party(party_id),
-         %Ecto.Changeset{valid?: true} = changeset <- Guest.changeset(%Guest{}, guest_params) do
-      changeset
-      |> Changeset.put_assoc(:party, party)
-      |> Repo.insert()
+    with {:ok, party} <- Events.load_party(party_id) do
+      changeset = Guest.changeset(%Guest{}, guest_params)
+
+      case changeset do
+        %Ecto.Changeset{valid?: true} = changeset ->
+          changeset
+          |> Changeset.put_assoc(:party, party)
+          |> Repo.insert()
+
+        %Ecto.Changeset{valid?: false} = changeset ->
+          {:error, changeset}
+      end
     end
   end
 
