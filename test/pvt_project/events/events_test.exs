@@ -8,8 +8,8 @@ defmodule PvtProject.EventsTest do
   alias PvtProject.Events.{Guest, Party}
 
   @valid_guest %{
-    "name" => "guest_name",
-    "phone_number" => "guest_phone_number"
+    "name" => "valid_name",
+    "phone_number" => "valid_phone_number"
   }
   @invalid_id 0
   @invalid_params %{}
@@ -35,15 +35,17 @@ defmodule PvtProject.EventsTest do
       assert party.description == loaded_party.description
       assert party.address == loaded_party.address
       assert party.date == loaded_party.date
+
+      [guest1, guest2] = party.guests
+
+      assert guest1 in party.guests
+      assert guest2 in party.guests
     end
 
     test "when party id is invalid, returns an error" do
       insert(:party)
-
       expected_response = {:error, "Party not found!"}
-
       response = Events.load_party(@invalid_id)
-
       assert response == expected_response
     end
   end
@@ -58,7 +60,7 @@ defmodule PvtProject.EventsTest do
       assert party.address == party_params["address"]
       assert party.date == NaiveDateTime.from_iso8601!(party_params["date"])
 
-      guest = hd(party.guests)
+      [guest] = party.guests
 
       assert guest.name == @valid_guest["name"]
       assert guest.phone_number == @valid_guest["phone_number"]
@@ -66,7 +68,6 @@ defmodule PvtProject.EventsTest do
 
     test "when params is invalid, returns a tuple error" do
       party = insert(:party)
-
       assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
     end
   end
@@ -79,11 +80,12 @@ defmodule PvtProject.EventsTest do
       assert {:ok, %Guest{} = guest} = Events.add_new_guest(party.id, guest_params)
       assert guest.name == guest_params["name"]
       assert guest.phone_number == guest_params["phone_number"]
+      assert guest.paid
+      assert guest.party_id == party.id
     end
 
     test "when params is invalid, returns a tuple error" do
       party = insert(:party)
-
       assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
     end
   end
