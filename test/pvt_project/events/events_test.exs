@@ -7,10 +7,6 @@ defmodule PvtProject.EventsTest do
   alias PvtProject.Events
   alias PvtProject.Events.{Guest, Party}
 
-  @valid_guest %{
-    "name" => "valid_name",
-    "phone_number" => "valid_phone_number"
-  }
   @invalid_id 0
   @invalid_params %{}
 
@@ -35,39 +31,39 @@ defmodule PvtProject.EventsTest do
       assert party.description == loaded_party.description
       assert party.address == loaded_party.address
       assert party.date == loaded_party.date
-
-      [guest1, guest2] = party.guests
-
-      assert guest1 in party.guests
-      assert guest2 in party.guests
+      assert party.guests == loaded_party.guests
     end
 
     test "when party id is invalid, returns an error" do
       insert(:party)
+
       expected_response = {:error, "Party not found!"}
       response = Events.load_party(@invalid_id)
+
       assert response == expected_response
     end
   end
 
   describe "create_party/1" do
     test "when params is valid, returns a new party" do
-      party_params = string_params_with_assocs(:party, guests: [@valid_guest])
+      guest_params = %{name: "guest_name", phone_number: "guest_phone_number"}
+      party_params = string_params_with_assocs(:party, guests: [guest_params])
 
       assert {:ok, %Party{} = party} = Events.create_party(party_params)
       assert party.name == party_params["name"]
       assert party.description == party_params["description"]
       assert party.address == party_params["address"]
-      assert party.date == NaiveDateTime.from_iso8601!(party_params["date"])
+      assert party.date
 
       [guest] = party.guests
 
-      assert guest.name == @valid_guest["name"]
-      assert guest.phone_number == @valid_guest["phone_number"]
+      assert guest.name == guest_params.name
+      assert guest.phone_number == guest_params.phone_number
     end
 
     test "when params is invalid, returns a tuple error" do
       party = insert(:party)
+
       assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
     end
   end
@@ -80,8 +76,8 @@ defmodule PvtProject.EventsTest do
       assert {:ok, %Guest{} = guest} = Events.add_new_guest(party.id, guest_params)
       assert guest.name == guest_params["name"]
       assert guest.phone_number == guest_params["phone_number"]
-      assert guest.paid
       assert guest.party_id == party.id
+      assert guest.paid
     end
 
     test "when params is invalid, returns a tuple error" do

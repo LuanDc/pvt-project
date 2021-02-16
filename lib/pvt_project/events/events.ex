@@ -39,7 +39,12 @@ defmodule PvtProject.Events do
   """
   @spec load_party(any) :: {:ok, Events.Party.t()}
   def load_party(party_id) do
-    case Repo.get(Party, party_id) do
+    party =
+      Party
+      |> Repo.get(party_id)
+      |> Repo.preload(:guests)
+
+    case party do
       nil -> {:error, "Party not found!"}
       party -> {:ok, party}
     end
