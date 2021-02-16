@@ -3,6 +3,8 @@ defmodule PvtProject.Events do
   The events context.
   """
 
+  import Ecto.Query
+
   alias Ecto.Changeset
   alias PvtProject.Repo
   alias PvtProject.Events
@@ -18,7 +20,10 @@ defmodule PvtProject.Events do
 
   """
   @spec load_parties :: [Events.Party.t(), ...]
-  def load_parties(), do: Party |> Repo.all()
+  def load_parties() do
+    from(p in Party, preload: [guests: ^from(g in Guest, order_by: g.name)])
+    |> Repo.all()
+  end
 
   @doc """
   Returns a party
@@ -41,25 +46,6 @@ defmodule PvtProject.Events do
   end
 
   @doc """
-  Returns a party and load all associations
-
-  ## Example
-    iex> load_party(party_id)
-    {:ok, PvtProject.Events.Party.t()}
-
-    iex> load_party(invalid_party_id)
-    {:error, changeset}
-
-  """
-  @spec load_party_and_assocs(String.t()) ::
-    {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
-  def load_party_and_assocs(party_id) do
-    with {:ok, party} <- Events.load_party(party_id) do
-      {:ok, Events.load_guests_from_party(party)}
-    end
-  end
-
-  @doc """
   Create a new party
 
   ## Example
@@ -72,7 +58,7 @@ defmodule PvtProject.Events do
 
   """
   @spec create_party(map()) ::
-    {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
   def create_party(params) do
     changeset = Party.changeset(%Party{}, params)
 
@@ -98,7 +84,7 @@ defmodule PvtProject.Events do
 
   """
   @spec add_new_guest(String.t(), map()) ::
-    {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Events.Party.t()} | {:error, Ecto.Changeset.t()}
   def add_new_guest(party_id, guest_params) do
     with {:ok, party} <- Events.load_party(party_id) do
       changeset = Guest.changeset(%Guest{}, guest_params)
@@ -113,19 +99,5 @@ defmodule PvtProject.Events do
           {:error, changeset}
       end
     end
-  end
-
-  @doc """
-  Receives a party and load guests assoc
-
-  ## Example
-
-    iex> load_guests_from_party(party)
-    PvtProject.Events.Party.t()
-
-  """
-  @spec load_guests_from_party(Events.Party.t()) :: Events.Party.t()
-  def load_guests_from_party(%Party{} = party) do
-    Repo.preload(party, :guests)
   end
 end

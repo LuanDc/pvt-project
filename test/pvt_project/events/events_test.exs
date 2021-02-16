@@ -4,7 +4,6 @@ defmodule PvtProject.EventsTest do
   import PvtProject.Factory
 
   alias Ecto.Changeset
-  alias PvtProject.Repo
   alias PvtProject.Events
   alias PvtProject.Events.{Guest, Party}
 
@@ -21,11 +20,8 @@ defmodule PvtProject.EventsTest do
 
       parties = Events.load_parties()
 
-      expected_party1 = party1 |> Repo.forget(:guests, :many)
-      expected_party2 = party2 |> Repo.forget(:guests, :many)
-
-      assert expected_party1 in parties
-      assert expected_party2 in parties
+      assert party1 in parties
+      assert party2 in parties
     end
   end
 
@@ -45,6 +41,7 @@ defmodule PvtProject.EventsTest do
       insert(:party)
 
       expected_response = {:error, "Party not found!"}
+
       response = Events.load_party(@invalid_id)
 
       assert response == expected_response
