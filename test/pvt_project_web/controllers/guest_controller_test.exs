@@ -9,7 +9,9 @@ defmodule PvtProjectWeb.GuestControllerTest do
   @invalid_party_id 123
 
   describe "POST /guests" do
-    test "when params is valid, renders a create guest message and returns 201 status code", %{conn: conn} do
+    test "when params is valid, renders a create guest message and returns 201 status code", %{
+      conn: conn
+    } do
       party = insert(:party)
       guest = string_params_for(:guest)
 
@@ -48,8 +50,8 @@ defmodule PvtProjectWeb.GuestControllerTest do
     end
 
     test "when party is invalid, returns an error message and 400 status code", %{conn: conn} do
-      party = insert(:party)
-      guest = string_params_for(:guest)
+      insert(:party)
+      string_params_for(:guest)
 
       expected_response = %{
         "message" => "Bad Request",
@@ -61,7 +63,7 @@ defmodule PvtProjectWeb.GuestControllerTest do
         |> post(Routes.guest_path(conn, :create, @invalid_party_id), %{guest: @invalid_params})
         |> json_response(:bad_request)
 
-      assert response == response
+      assert expected_response == response
     end
   end
 

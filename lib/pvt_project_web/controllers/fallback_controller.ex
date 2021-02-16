@@ -9,4 +9,11 @@ defmodule PvtProjectWeb.FallbackController do
     |> put_view(PvtProjectWeb.ErrorView)
     |> render("400.json", changeset: changeset)
   end
+
+  def call(conn, {:error, reason}) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(PvtProjectWeb.ErrorView)
+    |> render("400.json", reason: reason)
+  end
 end
