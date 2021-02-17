@@ -2,14 +2,15 @@ defmodule PvtProjectWeb.Router do
   use PvtProjectWeb, :router
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/v1", PvtProjectWeb do
-    pipe_through :api
+    pipe_through(:api)
 
-    resources "/parties", PartyController, only: [:index, :create]
-    resources "/parties/:id/guests", GuestController, only: [:create]
+    resources("/parties", PartyController, only: [:index, :create])
+    resources("/parties/:id/guests", GuestController, only: [:create])
+    put("/guests/:id/payment-status", GuestController, :update_payment_status)
   end
 
   # Enables LiveDashboard only for development
@@ -23,8 +24,8 @@ defmodule PvtProjectWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through [:fetch_session, :protect_from_forgery]
-      live_dashboard "/dashboard", metrics: PvtProjectWeb.Telemetry
+      pipe_through([:fetch_session, :protect_from_forgery])
+      live_dashboard("/dashboard", metrics: PvtProjectWeb.Telemetry)
     end
   end
 end

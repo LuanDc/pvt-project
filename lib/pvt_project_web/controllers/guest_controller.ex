@@ -5,7 +5,7 @@ defmodule PvtProjectWeb.GuestController do
 
   alias PvtProject.Events
 
-  action_fallback PvtProjectWeb.FallbackController
+  action_fallback(PvtProjectWeb.FallbackController)
 
   @doc false
   @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -14,6 +14,17 @@ defmodule PvtProjectWeb.GuestController do
       conn
       |> put_status(:created)
       |> render("create.json", guest: guest)
+    end
+  end
+
+  @doc false
+  @spec update_payment_status(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update_payment_status(conn, params) do
+    with {:ok, guest} <-
+           Events.update_guest_payment_status(params["id"], params) do
+      conn
+      |> put_status(:ok)
+      |> render("update_payment_status.json", guest: guest)
     end
   end
 end

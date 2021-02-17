@@ -105,4 +105,57 @@ defmodule PvtProject.Events do
       end
     end
   end
+
+  @doc """
+    Returns a guest
+
+    ## Example
+
+      iex> load_guest(invalid_guest_id)
+      {:ok, PvtProject.Events.Party.t()}
+
+      iex> load_guest(invalid_guest_id)
+      {:error, String.t()}
+
+  """
+  @spec load_guest(String.t()) ::
+          {:ok, Events.Guest.t()} | {:error, Ecto.Changeset.t()}
+  def load_guest(guest_id) do
+    response = Repo.get(Guest, guest_id)
+
+    case response do
+      nil -> {:error, "Guest not found!"}
+      guest -> {:ok, guest}
+    end
+  end
+
+  @doc """
+    Returns a guest
+
+    ## Example
+
+      iex> update_guest_payment_status(guest_id, params)
+      {:ok, PvtProject.Events.Party.t()}
+
+      iex> load_guest(invalid_guest_id)
+      {:error, String.t()}
+
+  """
+  @spec update_guest_payment_status(String.t(), map()) ::
+          {:ok, Events.Guest.t()} | {:error, Ecto.Changeset.t()}
+  def update_guest_payment_status(guest_id, params) do
+    with {:ok, _party} <- Events.load_party(params["party_id"]),
+         {:ok, guest} <- Events.load_guest(guest_id) do
+      changeset_params = %{paid: params["paid"]}
+      changeset = Guest.changeset(guest, changeset_params)
+
+      case changeset do
+        %Ecto.Changeset{valid?: true} ->
+          Repo.update(changeset)
+
+        %Ecto.Changeset{valid?: false} = changeset ->
+          {:error, changeset}
+      end
+    end
+  end
 end

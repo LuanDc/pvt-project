@@ -19,7 +19,8 @@ defmodule PvtProjectWeb.GuestControllerTest do
         "message" => "Guest added with success!",
         "guest" => %{
           "name" => guest["name"],
-          "phoneNumber" => guest["phone_number"]
+          "phone_number" => guest["phone_number"],
+          "paid" => guest["paid"]
         }
       }
 
@@ -62,6 +63,34 @@ defmodule PvtProjectWeb.GuestControllerTest do
         conn
         |> post(Routes.guest_path(conn, :create, @invalid_party_id), %{guest: @invalid_params})
         |> json_response(:bad_request)
+
+      assert expected_response == response
+    end
+  end
+
+  describe "UPDATE /guests/:id/payment-status" do
+    test "when params is valid, change the guest payment status", %{conn: conn} do
+      party = insert(:party)
+      [guest] = party.guests
+
+      params = %{
+        "party_id" => party.id,
+        "paid" => true
+      }
+
+      expected_response = %{
+        "message" => "The guest payment status was updated with success!",
+        "guest" => %{
+          "name" => guest.name,
+          "phone_number" => guest.phone_number,
+          "paid" => params["paid"]
+        }
+      }
+
+      response =
+        conn
+        |> put(Routes.guest_path(conn, :update_payment_status, guest.id), params)
+        |> json_response(:ok)
 
       assert expected_response == response
     end

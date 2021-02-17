@@ -36,7 +36,7 @@ defmodule PvtProjectWeb.PartyControllerTest do
   describe "POST /parties" do
     test "when params is valid, returns 201 status code", %{conn: conn} do
       party = string_params_for(:party)
-      [guest_1, guest_2] = party["guests"]
+      [guest] = party["guests"]
 
       expected_response = %{
         "message" => "Event Created With Success",
@@ -48,12 +48,9 @@ defmodule PvtProjectWeb.PartyControllerTest do
             "date" => party["date"],
             "guests" => [
               %{
-                "name" => guest_1["name"],
-                "phoneNumber" => guest_1["phone_number"]
-              },
-              %{
-                "name" => guest_2["name"],
-                "phoneNumber" => guest_2["phone_number"]
+                "name" => guest["name"],
+                "phone_number" => guest["phone_number"],
+                "paid" => guest["paid"]
               }
             ]
           }

@@ -1,32 +1,28 @@
 defmodule PvtProjectWeb.GuestView do
   use PvtProjectWeb, :view
 
+  alias PvtProjectWeb.GuestView
   alias PvtProject.Events.Guest
 
-  def render("create.json", %{
-        guest: %Guest{
-          name: guest_name,
-          phone_number: guest_phone_number
-        }
-      }) do
+  def render("create.json", %{guest: %Guest{} = guest}) do
     %{
       message: "Guest added with success!",
-      guest: %{
-        name: guest_name,
-        phoneNumber: guest_phone_number
-      }
+      guest: render_one(guest, GuestView, "guest.json", guest: guest)
     }
   end
 
-  def render("guest.json", %{
-        guest: %Guest{
-          name: guest_name,
-          phone_number: guest_phone_number
-        }
-      }) do
+  def render("update_payment_status.json", %{guest: %Guest{} = guest}) do
     %{
-      name: guest_name,
-      phoneNumber: guest_phone_number
+      message: "The guest payment status was updated with success!",
+      guest: render_one(guest, GuestView, "guest.json", guest: guest)
+    }
+  end
+
+  def render("guest.json", %{guest: %Guest{} = guest}) do
+    %{
+      name: guest.name,
+      phone_number: guest.phone_number,
+      paid: guest.paid
     }
   end
 end

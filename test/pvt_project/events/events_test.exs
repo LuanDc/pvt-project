@@ -9,6 +9,7 @@ defmodule PvtProject.EventsTest do
 
   @invalid_id 0
   @invalid_params %{}
+  @paid false
 
   describe "load_parties/0" do
     test "returns all parties" do
@@ -68,6 +69,23 @@ defmodule PvtProject.EventsTest do
     end
   end
 
+  describe "load_guest/1" do
+    test "when params is valid, returns a guest" do
+      guest = insert(:guest)
+
+      {:ok, %Guest{} = loaded_guest} = Events.load_guest(guest.id)
+      assert loaded_guest.name == guest.name
+      assert loaded_guest.phone_number == guest.phone_number
+      assert loaded_guest.paid == guest.paid
+    end
+
+    test "when params is invalid, returns an error" do
+      insert(:guest)
+
+      assert {:error, "Guest not found!"} = Events.load_guest(@invalid_id)
+    end
+  end
+
   describe "add_new_guest/2" do
     test "when params is valid, returns a new guest" do
       party = insert(:party)
@@ -83,6 +101,22 @@ defmodule PvtProject.EventsTest do
     test "when params is invalid, returns a tuple error" do
       party = insert(:party)
       assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
+    end
+  end
+
+  describe "update_guest_payment_status/2" do
+    test "when params is valid, update guest payment status" do
+      party = insert(:party)
+      guest = insert(:guest)
+
+      assert {:ok, %Guest{} = updated_guest} =
+               Events.update_guest_payment_status(guest.id, %{
+                 "party_id" => party.id,
+                 "paid" => @paid
+               })
+
+      assert updated_guest.id == guest.id
+      assert updated_guest.paid == @paid
     end
   end
 end
