@@ -109,14 +109,23 @@ defmodule PvtProject.EventsTest do
       party = insert(:party)
       guest = insert(:guest)
 
+      params = %{
+        "party_id" => party.id,
+        "paid" => @paid
+      }
+
       assert {:ok, %Guest{} = updated_guest} =
-               Events.update_guest_payment_status(guest.id, %{
-                 "party_id" => party.id,
-                 "paid" => @paid
-               })
+               Events.update_guest_payment_status(guest.id, params)
 
       assert updated_guest.id == guest.id
       assert updated_guest.paid == @paid
+    end
+
+    test "when params is invalid, returns a tuple error" do
+      party = insert(:party)
+      insert(:guest)
+
+      assert {:error, %Changeset{}} = Events.add_new_guest(party.id, @invalid_params)
     end
   end
 end
